@@ -1,11 +1,6 @@
 """Module for IQ Option API signaler."""
-from datetime import datetime
-import time
 import logging
-#import iqoptionapi.stable_api as IQ_Option
-import iqoptionapi.constants as api_constants
 import patterns.constants as pattern_constants
-# from signal import Signal
 
 class Signal(object):
     """Class for IQ Option API signal."""

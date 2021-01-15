@@ -1,13 +1,5 @@
 """Module for IQ Option API TEST pattern."""
 
-from time import daylight
-from numpy.core.arrayprint import _none_or_positive_arg
-from numpy.core.function_base import linspace
-from numpy.core.numeric import cross
-from pandas.core.frame import DataFrame
-from patterns.base import Base
-from patterns.indicators import Indicators
-from patterns.frame_dance import Robot
 import numpy as np
 
 class CURVE_FIT():

@@ -1,17 +1,9 @@
 
 from patterns.stock_frame import StockFrame
-import pandas as pd
 from patterns.base import Base
 from patterns.indicators import Indicators
 
-
-import iqoptionapi.constants as api_constants
-#import logging
-import time
-from datetime import datetime,timezone,timedelta
-from pprint import pprint
-import numpy as np
-
+from datetime import datetime
 
 class Robot():
     def __init__(self, api, actives) -> None:

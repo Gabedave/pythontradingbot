@@ -1,13 +1,4 @@
 """Module for IQ Option API TEST pattern."""
-
-from time import daylight
-from numpy.core.arrayprint import _none_or_positive_arg
-from numpy.core.function_base import linspace
-from numpy.core.numeric import cross
-from pandas.core.frame import DataFrame
-from patterns.base import Base
-from patterns.indicators import Indicators
-from patterns.frame_dance import Robot
 import numpy as np
 
 class TWO_MIN_CROSS():
@@ -20,7 +11,7 @@ class TWO_MIN_CROSS():
         """
         #candle_length = 120
         #super(TEST, self).__init__(api, candle_length)
-        self.name = "TEST"
+        self.name = "TWO_MINS_CROSS"
         self.stockframe = stockframe
         self.active = active
         self.duration = 2 #minutes

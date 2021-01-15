@@ -1,9 +1,7 @@
 """Module for IQ Option API starter."""
 
 import os
-import argparse
 import logging
-import datetime
 
 from iqoptionapi.stable_api import IQ_Option
 from config import parse_config, _parse_args
