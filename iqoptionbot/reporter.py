@@ -10,4 +10,4 @@ class Report:
 
         for id in self.__report_data:
             with open(file_path, "a") as report_file:
-                json.dump(id, report_file, indent=4)
+                json.dump(id, report_file, indent=None)

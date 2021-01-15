@@ -1,4 +1,3 @@
 pylint
 scipy
 numpy
-qtpylib
