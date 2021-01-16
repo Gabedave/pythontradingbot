@@ -1,7 +1,7 @@
 
-from patterns.stock_frame import StockFrame
+from stock_frame import StockFrame
 from patterns.base import Base
-from patterns.indicators import Indicators
+from indicators import Indicators
 
 from datetime import datetime
 

@@ -119,7 +119,7 @@ class CURVE_FIT():
         n = np.poly1d(m) #sma14 curvefit
 
         g = f - n
-        x_bounds = np.linspace(x[-1],x[-1]+1,10)
+        x_bounds = np.linspace(x[-1],x[-1]+1,20)
         idx = np.diff(np.sign(g(x_bounds)))/2
         
         for value in idx:

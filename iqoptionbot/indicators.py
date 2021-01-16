@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
-from qtpylib import indicators as qtpylib
+from additional_libs.qtpylib import indicators as qtpylib
 
 from typing import Any
 from typing import Dict
 from typing import Union
 
-from pyrobot.stock_frame import StockFrame
+from stock_frame import StockFrame
 
 class Indicators():
 

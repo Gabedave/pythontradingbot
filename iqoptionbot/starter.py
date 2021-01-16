@@ -3,11 +3,11 @@
 import os
 import logging
 
-from iqoptionapi.stable_api import IQ_Option
+from additional_libs.iqoptionapi.stable_api import IQ_Option
 from config import parse_config, _parse_args
 from signaler import create_signaler
 from trader import create_trader
-from patterns.frame_dance import Robot
+from frame_dance import Robot
 from reporter import Report
 
 import time

@@ -1,5 +1,4 @@
 # IQ Option Trade system
-[![Build Status](https://travis-ci.org/n1nj4z33/iqoptionbot.png)](https://travis-ci.org/n1nj4z33/iqoptionbot)
 
 ###Requirements installation
 
@@ -31,6 +30,7 @@ Edit configuration file
             "TEST",
             "TBH"
         ]
+        "balance_mode": "PRACTICE"
     }
 }
 ```

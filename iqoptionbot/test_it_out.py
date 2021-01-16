@@ -13,9 +13,9 @@ import iqoptionapi.constants as api_constants
 import time
 from datetime import datetime,timezone,timedelta
 from pprint import pprint
-from patterns.frame_dance import Robot
+from frame_dance import Robot
 
-from patterns.test import TEST
+from patterns.curve_fit import CURVE_FIT
 args = _parse_args()
 config = parse_config(args.config_path)
 
@@ -39,8 +39,8 @@ traders = be.start_traders()
 
 price_d = be.start_data_frame()
 
-#price_df = price_d.frame
-#df = price_df.frame
+price_df = price_d.frame
+df = price_df.frame
 
 #with open("dataframe.txt",'a') as f:
     #f.write(df.to_string())
@@ -49,28 +49,28 @@ import pandas as pd
 from matplotlib import pyplot
 from numpy import arange
 import numpy as np
-from scipy.optimize import curve_fit,toms748
+from scipy.optimize import curve_fit
 
-test = TEST('AUDUSD', price_d)
+curve_fit = CURVE_FIT('GBPUSD-OTC', price_d)
 
-tail = test._frame_.tail(15)
+tail = curve_fit._frame_.iloc[-35:-20]
 print(tail)
-#print(test.ma_future_cross())
+#print(CURVE_FIT.ma_future_cross())
 """
-while test.ma_future_cross() != True:
+while CURVE_FIT.ma_future_cross() != True:
     time.sleep(90)
     price_d.update_frame()
-    print(test._frame_.tail())
-
-print(test.ma_future_cross())
+    print(CURVE_FIT._frame_.tail())
 """
-"""
-x=np.array([1,2,3,4,5])
+print(curve_fit.ma_future_cross())
 
+
+x_real =tail.index.values
+x = np.arange(1, len(x_real)+1, 1)
 y=tail.loc[:,'sma6'].values
 z=tail.loc[:,'sma14'].values
 
-
+""""""
 o = np.polyfit(x,y,3)
 f = np.poly1d(o)
 
@@ -96,7 +96,7 @@ pyplot.plot(x_new, z_new,'b--')
 pyplot.plot(x_new, y_new,'g--')
 pyplot.xlim(x[0]-1, x[-1]+2)
 pyplot.show()
-"""
+
 """
 print(be.api.get_all_profit()['EURUSD']['turbo'])
 """

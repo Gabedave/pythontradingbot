@@ -1,10 +1,6 @@
 """Module for IQ Option API trader."""
 
 import logging
-from shutil import register_unpack_format
-import time
-import iqoptionapi.constants as api_constants
-import iqoptionapi.stable_api as IQ_Option
 
 class Trader(object):
     """Calls for IQ Option API trader."""
