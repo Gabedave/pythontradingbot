@@ -90,33 +90,6 @@ class TWO_MIN_CROSS():
         if all(value <= 0 for value in mini_list):
             return 'red'
 
-    def ma_future_cross(self):
-        if self.macd_cross() == False:
-            return False, None
-        
-        tail = self._frame_.tail()
-
-        x=np.array([1,2,3,4,5])
-
-        y=tail.loc[:,'sma6'].values
-        z=tail.loc[:,'sma14'].values
-
-        o = np.polyfit(x,y,3)
-        f = np.poly1d(o) #sma6 curvefit
-
-        m = np.polyfit(x,z,3)
-        n = np.poly1d(m) #sma14 curvefit
-
-        g = f - n
-        x_bounds = np.linspace(x[-1],x[-1]+1,10)
-        idx = np.diff(np.sign(g(x_bounds)))/2
-        
-        for value in idx:
-            if value != 0:
-                return True, value
-
-        return False, None
-
     def chopiness_test(self):
         if self._frame_['chopiness'].iloc[-2:] <= 60:
             return True
