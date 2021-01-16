@@ -239,10 +239,10 @@ def start():
     t_end = time.time() + 10 * 60 * 60
     hr_mark = time.time() + 60*60
     result_count = 0
-    trade_ids = []
+    
 
     while True:
-        
+        trade_ids = []
         for signaler in signalers:
             signal = signaler.get_signal()
             if signal and buffer.check(signal):

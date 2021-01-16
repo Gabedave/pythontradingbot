@@ -25,35 +25,29 @@ class CURVE_FIT():
 
     def call(self):
         """Method to check call pattern."""
-        rules = [self.macd_cross() == (True, 1),
-        self.ma_cross() == (True,1),
-        self.diffsma30() == (True,1),
-        self.candles_colour() == 'green']
-        
-        rules_alt = [self.macd_cross() == (True, 1),
-        self.ma_future_cross() == (True,1),
-        self.diffsma30() == (True,1),
-        self.candles_colour(1) == 'green',
-        self.chopiness_test == True]
+        rules = [
+            self.macd_cross() == (True, 1),
+            self.ma_future_cross() == (True,1),
+            self.diffsma30() == (True,1),
+            self.candles_colour(1) == 'green',
+            self.chopiness_test == True
+            ]
 
-        if all(rules_alt):
+        if all(rules):
             return True
         else: return False
 
     def put(self):
         """Method to check put pattern."""
-        rules = [self.macd_cross() == (True, -1),
-        self.ma_cross() == (True,-1),
-        self.diffsma30() == (True,-1),
-        self.candles_colour() == 'red']
-
-        rules_alt = [self.macd_cross() == (True, -1),
-        self.ma_future_cross() == (True,-1),
-        self.diffsma30() == (True,-1),
-        self.candles_colour(1) == 'red',
-        self.chopiness_test == True]
+        rules = [
+            self.macd_cross() == (True, -1),
+            self.ma_future_cross() == (True,-1),
+            self.diffsma30() == (True,-1),
+            self.candles_colour(1) == 'red',
+            self.chopiness_test == True
+            ]
         
-        if all(rules) or all(rules_alt):
+        if all(rules):
             return True
         else: return False
         
@@ -77,15 +71,19 @@ class CURVE_FIT():
             return False, None
         
     def diffsma30(self):
-        rules = [self._frame_['sma6'].diff(1).iloc[-1] >= 0.00,#positive gradient
-        np.sum(self._frame_['sma6'].iloc[-2:])/2 > self._frame_['sma30'].iloc[-1],#above sma30
-        self._frame_['sma14'].diff(1).iloc[-1] >= 0.00,#positive gradient
-        np.sum(self._frame_['sma14'].iloc[-2])/2 > self._frame_['sma30'].iloc[-1]]#above sma30
+        rules = [
+            self._frame_['sma6'].diff(1).iloc[-1] >= 0.00,#positive gradient
+            np.sum(self._frame_['sma6'].iloc[-2:])/2 > self._frame_['sma30'].iloc[-1],#above sma30
+            #self._frame_['sma14'].diff(1).iloc[-1] >= 0.00,#positive gradient
+            np.sum(self._frame_['sma14'].iloc[-2])/2 > self._frame_['sma30'].iloc[-1]#above sma30
+        ]
 
-        rules1 = [self._frame_['sma6'].diff(1).iloc[-1] <= 0.00,#negative gradient
-        np.sum(self._frame_['sma6'].iloc[-2:])/2 < self._frame_['sma30'].iloc[-1],#below sma30
-        self._frame_['sma14'].diff(1).iloc[-1] <= 0.00,#negative gradient
-        np.sum(self._frame_['sma14'].iloc[-2:])/2 < self._frame_['sma30'].iloc[-1]]#below sma30
+        rules1 = [
+            self._frame_['sma6'].diff(1).iloc[-1] <= 0.00,#negative gradient
+            np.sum(self._frame_['sma6'].iloc[-2:])/2 < self._frame_['sma30'].iloc[-1],#below sma30
+            #self._frame_['sma14'].diff(1).iloc[-1] <= 0.00,#negative gradient
+            np.sum(self._frame_['sma14'].iloc[-2:])/2 < self._frame_['sma30'].iloc[-1]#below sma30
+        ]
 
         if all(rules):
             return True, 1

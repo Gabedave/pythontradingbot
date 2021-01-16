@@ -1,4 +1,5 @@
 """Module for Trading bot reporter."""
+from datetime import datetime
 import json
 
 class Report:
@@ -6,8 +7,9 @@ class Report:
         pass
 
     def report(self, tradeid_list, file_path):
-        self.__report_data = tradeid_list
+        self.data = []
+        for id in tradeid_list:
+            self.data.append((datetime.utcnow(),id))
 
-        for id in self.__report_data:
             with open(file_path, "a") as report_file:
-                json.dump(id, report_file, indent=0)
+                json.dump(self.data, report_file, indent=4)
