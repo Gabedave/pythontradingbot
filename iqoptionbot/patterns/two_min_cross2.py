@@ -1,7 +1,7 @@
 """Module for IQ Option API TEST pattern."""
 import numpy as np
 
-class TWO_MIN_CROSS():
+class TWO_MIN_CROSS2():
     """Class for TEST pattern."""
 
     def __init__(self, active, stockframe):
@@ -11,7 +11,7 @@ class TWO_MIN_CROSS():
         """
         #candle_length = 120
         #super(TEST, self).__init__(api, candle_length)
-        self.name = "TWO_MINS_CROSS"
+        self.name = "TWO_MINS_CROSS2"
         self.stockframe = stockframe
         self.active = active
         self.duration = 2 #minutes
@@ -19,8 +19,7 @@ class TWO_MIN_CROSS():
             
     @property
     def _frame_(self):
-        #self._frame = self.stockframe.frame.frame.loc[self.active]
-        self._frame = self.stockframe
+        self._frame = self.stockframe.frame.frame.loc[self.active]
         return self._frame
 
     def call(self):
@@ -28,9 +27,8 @@ class TWO_MIN_CROSS():
         rules = [self.macd_cross() == (True, 1),
         self.ma_cross() == (True,1),
         self.diffsma30() == (True,1),
-        self.candles_colour() == 'green',
-        self.rsi_test() <= 75,
-        self.bollinger_test(1) != (False, 1)]
+        self.candles_direction() == 'green',
+        self.rsi_test() <= 75]
 
         if all(rules):
             return True
@@ -41,16 +39,15 @@ class TWO_MIN_CROSS():
         rules = [self.macd_cross() == (True, -1),
         self.ma_cross() == (True,-1),
         self.diffsma30() == (True,-1),
-        self.candles_colour() == 'red',
-        self.rsi_test() >= 25,
-        self.bollinger_test(1) != (False, -1)]
+        self.candles_direction() == 'red',
+        self.rsi_test() >= 25]
         
         if all(rules):
             return True
         else: return False
         
     def macd_cross(self):
-        crossvalues = np.flip(self._frame_['crossover_macd'].values)
+        crossvalues = np.flip(self._frame_.loc[:,'crossover_macd'].values)
         candlespassed = 0
         for value in crossvalues:
             if (value != 0) and (candlespassed <= 2):
@@ -60,7 +57,7 @@ class TWO_MIN_CROSS():
             candlespassed += 1
         
     def ma_cross(self):
-        crossover_sma = np.flip(self._frame_['crossover_sma'].values)
+        crossover_sma = np.flip(self._frame_.loc[:,'crossover_sma'].values)
         if crossover_sma[0] == 1:
             return True, 1
         elif crossover_sma[0] == -1:
@@ -86,12 +83,16 @@ class TWO_MIN_CROSS():
         else:
             return False, None
 
-    def candles_colour(self, number=2):
-        mini_list = self._frame_['price_diff'].iloc[-number:].values
-        if all(value >= 0 for value in mini_list):
+    def candles_direction(self, number=4):
+        mini_list = np.flip(self._frame_['price_diff'].iloc[:number].values)
+        pos = 0
+        neg = 0
+        diff = abs(np.sum(mini_list[mini_list>0])/np.sum(mini_list[mini_list<0]))
+        if diff > 1.3:
             return 'green'
-        if all(value <= 0 for value in mini_list):
+        elif diff < (1/1.3):
             return 'red'
+        else: return False
 
     def chopiness_test(self):
         if self._frame_['chopiness'].iloc[-2:] <= 60:
@@ -100,14 +101,4 @@ class TWO_MIN_CROSS():
 
     def rsi_test(self):
         return self._frame_['rsi14'].iloc[-1]
-
-    def bollinger_test(self, number):
-        a = self._frame_['close'].iloc[-number:].values
-        b = self._frame_['band_upper'].iloc[-number:].values
-        c = self._frame_['band_lower'].iloc[-number:].values
-        
-        if all(a[x] > b[x] for x in range(number)):
-            return False, 1
-        elif all(a[x] < c[x] for x in range(number)):
-            return False, -1
-        else: return True
+    

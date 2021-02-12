@@ -97,11 +97,11 @@ class Starter(object):
                 if all_markets[dirr][symbol]['open'] == True:
                     current_open_markets.append(symbol)
 
-        for active in self.actives:
+        for active in self.config.get_trade_actives():
             if active not in current_open_markets:
                 actives_not_open.append(active)
         
-        current_open_markets = list(set(self.actives) - set(actives_not_open))
+        current_open_markets = list(set(self.config.get_trade_actives()) - set(actives_not_open))
 
         if actives_not_open:
             print("{} not open right now".format(actives_not_open))
@@ -112,7 +112,7 @@ class Starter(object):
         self.actives = current_open_markets
         if current_open_markets == []:
             print('Market closed for all actives')
-            return False
+            return None
         time.sleep(2)
         return self.actives
 
@@ -122,7 +122,7 @@ class Buffer:
         self.signal = {}
 
     def activate(self, signal):
-        self.buffer = time.time() + 5*60
+        self.buffer = time.time() + 100
         self.signal[signal.active] = self.buffer
     
     def check(self, signal):
@@ -258,7 +258,7 @@ def start():
                             buffer.activate(signal)
                             trade_ids.append(trade_id)
                             result_count += 1
-        reporter.report(trade_ids,"iqoptionbot-master/iqoptionbot/report.txt")
+        reporter.report(trade_ids,"C:/Users/David/Desktop/iqoptionbot-master/iqoptionbot-master/iqoptionbot/report.txt")
         starter.update_balance()
         if time.time() >= hr_mark:
             starter.check_open_markets()

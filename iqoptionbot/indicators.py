@@ -5,6 +5,7 @@ from additional_libs.qtpylib import indicators as qtpylib
 from typing import Any
 from typing import Dict
 from typing import Union
+import copy
 
 from stock_frame import StockFrame
 
@@ -250,18 +251,18 @@ class Indicators():
         self._current_indicators[column_name] = {}
         self._current_indicators[column_name]['args'] = locals_data
         self._current_indicators[column_name]['func'] = self.rsi
-
+        
         # First calculate the Change in Price.
-        if 'change_in_price' not in self._frame.columns:
-            self.change_in_price()
+        if 'price_diff' not in self._frame.columns:
+            self.change_in_price('price_diff')
 
         # Define the up days.
-        self._frame['up_day'] = self._price_groups['change_in_price'].transform(
+        self._frame['up_day'] = self._price_groups['price_diff'].transform(
             lambda x : np.where(x >= 0, x, 0)
         )
 
         # Define the down days.
-        self._frame['down_day'] = self._price_groups['change_in_price'].transform(
+        self._frame['down_day'] = self._price_groups['price_diff'].transform(
             lambda x : np.where(x < 0, x.abs(), 0)
         )
 
@@ -282,11 +283,11 @@ class Indicators():
         relative_strength_index = 100.0 - (100.0 / (1.0 + relative_strength))
 
         # Add the info to the data frame.
-        self._frame[column_name] = np.where(relative_strength_index == 0, 100, 100 - (100 / (1 + relative_strength_index)))
+        self._frame[column_name] = np.where(relative_strength_index == (0 or 100), np.NaN , relative_strength_index)
 
         # Clean up before sending back.
         self._frame.drop(
-            labels=['ewma_up', 'ewma_down', 'down_day', 'up_day', 'change_in_price'],
+            labels=['ewma_up', 'ewma_down', 'down_day', 'up_day'],
             axis=1,
             inplace=True
         )
@@ -409,13 +410,14 @@ class Indicators():
 
         return self._frame        
 
-    def bollinger_bands(self, period: int = 20, column_name: str = 'bollinger_bands') -> pd.DataFrame:
+    def bollinger_bands(self, period: int = 20, std: int = 2, column_name: str = 'bollinger_bands') -> pd.DataFrame:
         """Calculates the Bollinger Bands.
 
         Arguments:
         ----
         period {int} -- The number of periods to use when calculating 
             the Bollinger Bands. (default: {20})
+        std {int} -- The number of standard deviations (default: {2})
 
         Returns:
         ----
@@ -440,30 +442,28 @@ class Indicators():
         self._current_indicators[column_name] = {}
         self._current_indicators[column_name]['args'] = locals_data
         self._current_indicators[column_name]['func'] = self.bollinger_bands
-
+        
+        self._frame['typical_price'] = (self._frame['close'] + self._frame['high'] + self._frame['low'])/3
+        
         # Define the Moving Avg.
-        self._frame['moving_avg'] = self._price_groups['close'].transform(
-            lambda x : x.rolling(period=period).mean()
+        self._frame['moving_avg'] = self._price_groups['typical_price'].transform(
+            lambda x: x.rolling(period).mean()
         )
 
         # Define Moving Std.
-        self._frame['moving_std'] = self._price_groups['close'].transform(
-            lambda x : x.rolling(period=period).std()
+        self._frame['moving_std'] = self._price_groups['typical_price'].transform(
+            lambda x: x.rolling(period).std()
         )
 
         # Define the Upper Band.
-        self._frame['band_upper'] = 4 * (self._frame['moving_std'] / self._frame['moving_avg'])
+        self._frame['band_upper'] = self._frame['moving_avg'] + (std * self._frame['moving_std'])
 
         # Define the lower band
-        self._frame['band_lower'] = (
-            (self._frame['close'] - self._frame['moving_avg']) + 
-            (2 * self._frame['moving_std']) / 
-            (4 * self._frame['moving_std'])
-        )
+        self._frame['band_lower'] = self._frame['moving_avg'] - (std * self._frame['moving_std'])
 
         # Clean up before sending back.
         self._frame.drop(
-            labels=['moving_avg', 'moving_std'],
+            labels=['moving_avg', 'moving_std', 'typical_price'],
             axis=1,
             inplace=True
         )
@@ -525,7 +525,7 @@ class Indicators():
 
         return self._frame
 
-    def stochastic_oscillator(self, column_name: str = 'stochastic_oscillator') -> pd.DataFrame:
+    def stochastic_oscillator(self, period: int = 14, p2: int = 3, p3: int = 3, column_name: str = 'stochastic_oscillator') -> pd.DataFrame:
         """Calculates the Stochastic Oscillator.
 
         Returns:
@@ -553,9 +553,33 @@ class Indicators():
         self._current_indicators[column_name]['func'] = self.stochastic_oscillator
 
         # Calculate the stochastic_oscillator.
-        self._frame['stochastic_oscillator'] = (
-            self._frame['close'] - self._frame['low'] / 
-            self._frame['high'] - self._frame['low']
+        self._frame['period_low'] = self._price_groups['low'].transform(
+            lambda x: x.rolling(period).min()
+        )
+
+        self._frame['period_high'] = self._price_groups['high'].transform(
+            lambda x: x.rolling(period).max()
+        )
+
+        self._frame['stoch'] = (
+            (self._frame['close'] - self._frame['period_low']) /
+            (self._frame['period_high'] - self._frame['period_low'])
+        ) * 100
+
+        # Calculate the Full Stochastic Oscillator
+        self._frame['stoch_%K'] = self._price_groups['stoch'].transform(
+            lambda x: x.rolling(p2).mean()
+        )
+        # Since %D is rarely used, I will comment it out
+        """
+        self._frame['stoch_%D'] = self._price_groups['stoch_%K'].transform(
+            lambda x: x.rolling(p3).mean()
+        )
+        """
+        self._frame.drop(
+            labels=['period_low','period_high','stoch'],
+            axis=1,
+            inplace=True
         )
 
         return self._frame 
@@ -684,6 +708,50 @@ class Indicators():
             #for g in columns:a.loc[(key,g)] = _[g]
             self._frame.loc[(key,column_name)] = crossover
         #self._frame.append(a)
+        return self._frame
+
+    def volatility(self, min_period: int = 75, column_name: str ='volatility') -> pd.DataFrame:
+        """Calculates the Volatility.
+
+        Returns:
+        ----
+        {pd.DataFrame} -- A Pandas data frame with the Volatility included.
+
+        Usage:
+        ----
+            >>> historical_prices_df = trading_robot.grab_historical_prices(
+                start=start_date,
+                end=end_date,
+                bar_size=1,
+                bar_type='minute'
+            )
+            >>> price_data_frame = pd.DataFrame(data=historical_prices)
+            >>> indicator_client = Indicators(price_data_frame=price_data_frame)
+            >>> indicator_client.volatility()
+        """
+
+        locals_data = locals()
+        del locals_data['self']
+
+        self._current_indicators[column_name] = {}
+        self._current_indicators[column_name]['args'] = locals_data
+        self._current_indicators[column_name]['func'] = self.volatility
+
+        self._frame['candles_pct_change'] = self._frame['close'].pct_change()
+        self._frame['candles_pct_change'].fillna(0, inplace=True)
+
+        self._frame[column_name] = self._price_groups['candles_pct_change'].transform(
+            lambda x: x.rolling(min_period, min_periods = min_period).std()
+        )* np.sqrt(min_period)
+        #self._frame['candles_pct_change'].rolling(min_period).std() * np.sqrt(min_period)
+
+        # Clean up before sending back.
+        self._frame.drop(
+            labels=['candles_pct_change'],
+            axis=1,
+            inplace=True
+        )
+
         return self._frame
 
     def mass_index(self, period: int = 9, column_name: str = 'mass_index') -> pd.DataFrame:

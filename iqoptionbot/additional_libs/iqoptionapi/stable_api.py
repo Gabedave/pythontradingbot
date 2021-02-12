@@ -729,7 +729,16 @@ class IQ_Option:
         if p['win'] == 'win':
             return p['id'], p["win_amount"] - p["amount"]
         else: return p['id'], p["win_amount"] - p["amount"]
-
+    
+    def check_last_win_active(self, active):
+        p = self.get_optioninfo_v2(20)['msg']['closed_options']
+        for dict in p:
+            if dict['active'] == active:
+                if dict['win'] == 'win':
+                    return 'win', dict["win_amount"] - dict["amount"]
+                else: return 'lose', dict["win_amount"] - dict["amount"]
+        return None
+            
     # -------------------get infomation only for binary option------------------------
 
     def get_betinfo(self, id_number):

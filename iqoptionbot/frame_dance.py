@@ -45,11 +45,13 @@ class Robot():
         self.indicator_client.sma(14, 'sma14')
         self.indicator_client.sma(6, 'sma6')
         self.indicator_client.macd(12,26,'macd')
+        self.indicator_client.rsi(14,column_name='rsi14') 
         self.indicator_client.change_in_price('price_diff')
-        self.indicator_client.rsi(14,column_name='rsi14')
         self.indicator_client.add_crossover('macd_diff','macd','crossover_macd')
         self.indicator_client.add_crossover('sma6','sma14','crossover_sma')
         self.indicator_client.chopiness_index(14,'chopiness')
-
-
+        self.indicator_client.bollinger_bands(14)
+        self.indicator_client.stochastic_oscillator(14)
+        self.indicator_client.volatility(10, 'v10')
+        
         return self.frame

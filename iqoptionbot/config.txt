@@ -6,14 +6,13 @@
     },
     "trade_settings": {
         "actives": [
-            "EURUSD","GBPUSD","USDCHF","GBPAUD","EURAUD","AUDUSD","CADCHF","USDJPY","EURJPY","EURGBP","AUDCAD","GBPUSD","GBPJPY","USDCAD","EURCAD","NZDUSD","EURNZD","AUDJPY",
-"EURUSD-OTC","GBPUSD-OTC","USDZAR-OTC","USDXOF-OTC","USDCHF-OTC","GBPJPY-OTC","EURGBP-OTC","USDJPY-OTC","AUDCAD-OTC","NZDUSD-OTC","EURJPY-OTC"
+           "EURUSD","GBPUSD","USDCHF","GBPAUD","EURAUD","AUDUSD","CADCHF","USDJPY","EURJPY","EURGBP","AUDCAD","GBPUSD","GBPJPY","USDCAD","EURCAD","NZDUSD","EURNZD","AUDJPY"
         ],
         "balance_mode": 
             "REAL"
         ,
         "patterns": [
-            "TWO_MIN_CROSS","CURVE_FIT"
+            "CURVE_FIT","TWO_MIN_CROSS"
         ]
     }
 }

@@ -50,27 +50,34 @@ from matplotlib import pyplot
 from numpy import arange
 import numpy as np
 from scipy.optimize import curve_fit
+from patterns.bollinger_rsi import BOLLINGER_RSI
 
-curve_fit = CURVE_FIT('GBPUSD-OTC', price_d)
+test = BOLLINGER_RSI('EURGBP-OTC', price_d.frame.frame.loc['EURGBP-OTC'])
 
-tail = curve_fit._frame_.iloc[-35:-20]
-print(tail)
+tail = test._frame_
+print(test.call())
+print(test.put())
+c = test._frame_['v10']
+b = test._frame_['close']
+print(b)
+print(c)
 #print(CURVE_FIT.ma_future_cross())
+
+#print(test.candles_direction())
 """
-while CURVE_FIT.ma_future_cross() != True:
-    time.sleep(90)
-    price_d.update_frame()
-    print(CURVE_FIT._frame_.tail())
-"""
-print(curve_fit.ma_future_cross())
+d = np.array([-1,2,-3,4,-5])
+e = d[d>0]
+print(e)
 
 
-x_real =tail.index.values
+x_real = tail.index.values
 x = np.arange(1, len(x_real)+1, 1)
-y=tail.loc[:,'sma6'].values
-z=tail.loc[:,'sma14'].values
+y=tail['rsi14'].values
+z=tail['band_lower'].values
+x_close = tail.loc[:,'close'].values
 
-""""""
+
+
 o = np.polyfit(x,y,3)
 f = np.poly1d(o)
 
@@ -88,14 +95,21 @@ idx = np.argwhere(np.diff(np.sign(g(x_bounds))))
 #pyplot.plot(x[idx], f[idx], 'ro')
 print(idx)
 print(x_bounds[idx],f(x_bounds[idx]),g(x_bounds[idx]))
-
-pyplot.figure()
-pyplot.plot(x, y, 'o')
-pyplot.plot(x, z, 'o')
 pyplot.plot(x_new, z_new,'b--')
 pyplot.plot(x_new, y_new,'g--')
-pyplot.xlim(x[0]-1, x[-1]+2)
+"""
+
+
+pyplot.figure()
+pyplot.plot(b)
+pyplot.figure()
+
+pyplot.plot(c)
+#pyplot.plot(x, x_close)
+pyplot.ylim(0,0.009)
 pyplot.show()
+
+
 
 """
 print(be.api.get_all_profit()['EURUSD']['turbo'])

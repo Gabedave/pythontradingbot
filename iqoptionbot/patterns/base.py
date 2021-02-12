@@ -26,7 +26,7 @@ class Base(object):
         self.candle_length = candle_length
 
 
-    def candles(self, active, duration = None, no_of_candles = 60):
+    def candles(self, active, duration = None, no_of_candles = 60, endtime = None):
         """Method to get candles.
         
         Arguments:
@@ -39,8 +39,9 @@ class Base(object):
         """
         if not duration:
             duration = self.candle_length
-            
-        candles_data = self.api.get_candles(active, duration, no_of_candles, self.two_min_servertime.timestamp())
+        if endtime:
+            candles_data = self.api.get_candles(active, duration, no_of_candles, endtime)
+        else: candles_data = self.api.get_candles(active, duration, no_of_candles, self.two_min_servertime.timestamp())
 
         #time.sleep(0.3)
         return candles_data
@@ -84,7 +85,6 @@ class Base(object):
                 mini_prices_dict['datetime'] = candle['to']
                 new_prices.append(mini_prices_dict)
 
-        new_prices
         return new_prices
 
     def get_latest_bar(self):

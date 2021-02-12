@@ -54,26 +54,31 @@ class Signaler(object):
             if pattern.call():
                 logger.info("Signaler for active '%s' received pattern '%s' in direction 'call'.",
                             self.active, pattern.name)
-                self.set_buy_amount()
+                #self.set_buy_amount()
                 if self.buy_amount < 1: self.buy_amount = 1
+                #if self.buy_amount >= 5*(2/100) * self.balance: self.buy_amount = (2/100) * self.balance
                 return Signal(self.buy_amount, self.active, "call", pattern.duration)
             if pattern.put():
                 logger.info("Signaler for active '%s' received pattern '%s' in direction 'put'.",
                             self.active, pattern.name)
-                self.set_buy_amount()
+                #self.set_buy_amount()
                 if self.buy_amount < 1: self.buy_amount = 1
+                #if self.buy_amount >= 5*(2/100) * self.balance: self.buy_amount = (2/100) * self.balance
                 return Signal(self.buy_amount, self.active, "put", pattern.duration)
 
     def set_buy_amount(self):
-        check, profit = self.api.check_last_win()
-        if self.buy_amount <= 5*(5/100) * self.balance:
-            if profit < 0:
-                self.buy_amount = 2 * self.buy_amount
-            if profit > 0:
-                self.buy_amount = (5/100) * self.balance
-        else: self.buy_amount = (5/100) * self.balance
+        last_trade = self.api.check_last_win_active(self.active)
+        if not last_trade:
+            self.buy_amount = (2/100) * self.balance
+            return
+        check, profit = last_trade
+        if self.buy_amount <= 5*(2/100) * self.balance:
+            if check == 'win':
+                self.buy_amount = (2/100) * self.balance
+            elif profit < 0:
+                self.buy_amount = 2 * abs(profit)
+        else: self.buy_amount = (2/100) * self.balance
         
-
 
 def create_signaler(api, active, stockframe, balance):
     """Method for create signaler.

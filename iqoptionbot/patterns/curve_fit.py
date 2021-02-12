@@ -20,7 +20,8 @@ class CURVE_FIT():
             
     @property
     def _frame_(self):
-        self._frame = self.stockframe.frame.frame.loc[self.active]
+        #self._frame = self.stockframe.frame.frame.loc[self.active]
+        self._frame = self.stockframe
         return self._frame
 
     def call(self):
@@ -30,7 +31,8 @@ class CURVE_FIT():
             self.ma_future_cross() == (True,1),
             self.diffsma30() == (True,1),
             self.candles_colour(1) == 'green',
-            self.chopiness_test == True
+            self.bollinger_test(1) != (False, 1)
+            #self.volatility_test() == True
             ]
 
         if all(rules):
@@ -44,7 +46,8 @@ class CURVE_FIT():
             self.ma_future_cross() == (True,-1),
             self.diffsma30() == (True,-1),
             self.candles_colour(1) == 'red',
-            self.chopiness_test == True
+            self.bollinger_test(1) != (False, -1)
+            #self.volatility_test == True
             ]
         
         if all(rules):
@@ -73,16 +76,16 @@ class CURVE_FIT():
     def diffsma30(self):
         rules = [
             self._frame_['sma6'].diff(1).iloc[-1] >= 0.00,#positive gradient
-            np.sum(self._frame_['sma6'].iloc[-2:])/2 > self._frame_['sma30'].iloc[-1],#above sma30
+            self._frame_['sma6'].iloc[-1] > self._frame_['sma30'].iloc[-1],#above sma30
             #self._frame_['sma14'].diff(1).iloc[-1] >= 0.00,#positive gradient
-            np.sum(self._frame_['sma14'].iloc[-2])/2 > self._frame_['sma30'].iloc[-1]#above sma30
+            self._frame_['sma14'].iloc[-1] > self._frame_['sma30'].iloc[-1]#above sma30
         ]
 
         rules1 = [
             self._frame_['sma6'].diff(1).iloc[-1] <= 0.00,#negative gradient
-            np.sum(self._frame_['sma6'].iloc[-2:])/2 < self._frame_['sma30'].iloc[-1],#below sma30
+            self._frame_['sma6'].iloc[-1] < self._frame_['sma30'].iloc[-1],#below sma30
             #self._frame_['sma14'].diff(1).iloc[-1] <= 0.00,#negative gradient
-            np.sum(self._frame_['sma14'].iloc[-2:])/2 < self._frame_['sma30'].iloc[-1]#below sma30
+            self._frame_['sma14'].iloc[-1] < self._frame_['sma30'].iloc[-1]#below sma30
         ]
 
         if all(rules):
@@ -105,11 +108,14 @@ class CURVE_FIT():
         
         tail = self._frame_.tail()
 
-        x=np.array([1,2,3,4,5])
-
-        y=tail.loc[:,'sma6'].values
-        z=tail.loc[:,'sma14'].values
-
+        if len(tail) <= 4:
+            return False, None
+        
+        y=tail['sma6'].values
+        z=tail['sma14'].values
+        
+        x= np.arange(len(y)) +1
+       
         o = np.polyfit(x,y,3)
         f = np.poly1d(o) #sma6 curvefit
 
@@ -130,4 +136,21 @@ class CURVE_FIT():
         if self._frame_['chopiness'].iloc[-2:] <= 60:
             return True
         else: return False
-    
+
+    def bollinger_test(self, number):
+        a = self._frame_['close'].iloc[-number:].values
+        b = self._frame_['band_upper'].iloc[-number:].values
+        c = self._frame_['band_lower'].iloc[-number:].values
+        
+        if all(a[x] > b[x] for x in range(number)):
+            return False, 1
+        elif all(a[x] < c[x] for x in range(number)):
+            return False, -1
+        else: return True
+
+    def volatility_test(self):
+        a = self._frame_['v75'].iloc[-1].values
+        if a > 0.016:
+            return False
+
+        else: return True
