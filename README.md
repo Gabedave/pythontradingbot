@@ -1,4 +1,4 @@
-# IQ Option Trade system
+# Python Trading Bot using the IQ Option API
 
 ###Requirements installation
 
