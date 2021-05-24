@@ -10,6 +10,6 @@
 /*.csv
 *.ipynb
 /*.ipynb
-/iqoptionbot/*.txt
+iqoptionbot/*.txt
 *.ipy
 /*.ipynb
