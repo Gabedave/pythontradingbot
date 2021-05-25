@@ -1,1 +1,1 @@
-web: gunicorn ./starter.py $PORT
+web: python iqoptionbot/starter.py $PORT
