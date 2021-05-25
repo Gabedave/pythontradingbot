@@ -673,7 +673,20 @@ class Indicators():
         self._current_indicators[column_name]['func'] = self.chopiness_index
 
         #Add the indicator
-        self._frame[column_name]= qtpylib.chopiness(self._frame, period)
+        def true_range(bars):
+            return pd.DataFrame({
+                "hl": bars['high'] - bars['low'],
+                "hc": abs(bars['high'] - bars['close'].shift(1)),
+                "lc": abs(bars['low'] - bars['close'].shift(1))
+            }).max(axis=1)
+        
+        def chopiness(bars, window=14):
+            atrsum = true_range(bars).rolling(window).sum()
+            highs = bars['high'].rolling(window).max()
+            lows = bars['low'].rolling(window).min()
+            return 100 * np.log10(atrsum / (highs - lows)) / np.log10(window)
+        
+        self._frame[column_name]= chopiness(self._frame, period)
 
         return self._frame
 

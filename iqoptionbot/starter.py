@@ -32,7 +32,12 @@ class Starter(object):
         """Method for create connection to IQ Option API."""
         logger = logging.getLogger(__name__)
         logger.info("Create connection.")
-        check, reason = self.api.connect()
+
+        try:
+            check, reason = self.api.connect()
+        except Exception as e:
+            print('Error: ', e)
+
         if check:
             logger.info("Successfully connected.")
             if self.api.check_connect == False:
