@@ -263,7 +263,7 @@ def start():
                             buffer.activate(signal)
                             trade_ids.append(trade_id)
                             result_count += 1
-        reporter.report(trade_ids,"C:/Users/David/Desktop/iqoptionbot-master/iqoptionbot-master/iqoptionbot/report.txt")
+        reporter.report(trade_ids, os.path.join(os.path.dirname(__file__), "report.txt"))
         starter.update_balance()
         if time.time() >= hr_mark:
             starter.check_open_markets()
