@@ -1,4 +1,4 @@
-from starter.py import start
+from starter import start
 
 if __name__ == "__main__":
     start()
