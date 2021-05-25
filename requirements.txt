@@ -1,6 +1,6 @@
-pylint
-scipy
-numpy
-pandas
-iqoptionapi
-gunicorn
+pylint>=2.5.2
+scipy>=1.5.0
+numpy>=1.18.5
+pandas>=1.1.0
+iqoptionapi>=0.5
+gunicorn>=20.1.0
