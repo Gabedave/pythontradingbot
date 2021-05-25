@@ -19,8 +19,8 @@ class TWO_MIN_CROSS():
             
     @property
     def _frame_(self):
-        #self._frame = self.stockframe.frame.frame.loc[self.active]
-        self._frame = self.stockframe
+        self._frame = self.stockframe.frame.frame.loc[self.active]
+        #self._frame = self.stockframe
         return self._frame
 
     def call(self):

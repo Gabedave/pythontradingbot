@@ -1,6 +1,7 @@
 """Module for configuration settings."""
 import json
 import logging
+import os
 
 import constants as config_constants
 
@@ -138,5 +139,7 @@ class Settings(object):
         """
         logger = logging.getLogger(__name__)
         logger.info("Load configuration from file '%s'.", config_path)
+
+        config_path = os.path.join(os.path.dirname(__file__), config_path)
         with open(config_path, "rb") as config_file:
             self.__config_data = json.load(config_file)

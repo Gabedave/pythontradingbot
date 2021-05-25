@@ -37,8 +37,8 @@ def _parse_args():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-c", "--config_path", dest="config_path", type=str, default='config.txt',
-        help="Path to new configuration file.(default='config.txt')"
+        "-c", "--config_path", dest="config_path", type=str, default='config/config.json',
+        help="Path to new configuration file.(default='config/config.json')"
         )
     return parser.parse_args()
 

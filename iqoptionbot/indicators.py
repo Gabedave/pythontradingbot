@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from additional_libs.qtpylib import indicators as qtpylib
+from qtpylib import indicators as qtpylib
 
 from typing import Any
 from typing import Dict

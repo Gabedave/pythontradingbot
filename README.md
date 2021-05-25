@@ -3,7 +3,8 @@
 ###Requirements installation
 
 ```
-pip install iqoptionapi
+iqoptionapi
+qtpylib
 ```
 
 ###Basic usage:
@@ -35,9 +36,9 @@ Edit configuration file
 }
 ```
 
-Start IQ Option bot:
+Start python trading bot:
 ```
-python starter.py -c config.json
+python starter.py -c config/config.json
 ```
 
 Logs can be found in 'logs' folder

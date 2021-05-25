@@ -3,7 +3,7 @@
 import os
 import logging
 
-from additional_libs.iqoptionapi.stable_api import IQ_Option
+from iqoptionapi.stable_api import IQ_Option
 from config import parse_config, _parse_args
 from signaler import create_signaler
 from trader import create_trader
