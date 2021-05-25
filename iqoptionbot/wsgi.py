@@ -1,4 +1,4 @@
-from starter import start
+from iqoptionbot.starter import start
 
 if __name__ == "__main__":
     start()
