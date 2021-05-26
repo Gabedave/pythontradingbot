@@ -3,15 +3,18 @@
 ###Requirements installation
 
 ```
+scipy
+numpy
+pandas
 iqoptionapi
-qtpylib
+gunicorn
 ```
 
 ###Basic usage:
 
 Create new configuration file:
 ```
-python config.py -c config.json
+python config.py -c config/config.json
 ```
 
 Edit configuration file
