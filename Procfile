@@ -1,1 +1,1 @@
-web: gunicorn iqoptionbot.wsgi:start $PORT
+web: gunicorn iqoptionbot.wsgi:start() $PORT
