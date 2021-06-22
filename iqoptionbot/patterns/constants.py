@@ -1,13 +1,13 @@
 """Module for IQ Option API trade pattern constants."""
 
-from ../patterns.two_min_cross import TWO_MIN_CROSS
-from patterns.dblhc import DBLHC
-from patterns.dbhlc import DBHLC
-from patterns.tbh import TBH
-from patterns.tbl import TBL
-from patterns.curve_fit import CURVE_FIT
-from patterns.two_min_cross2 import TWO_MIN_CROSS2
-from patterns.bollinger_rsi import BOLLINGER_RSI
+from iqoptionbot.patterns.two_min_cross import TWO_MIN_CROSS
+from iqoptionbot.patterns.dblhc import DBLHC
+from iqoptionbot.patterns.dbhlc import DBHLC
+from iqoptionbot.patterns.tbh import TBH
+from iqoptionbot.patterns.tbl import TBL
+from iqoptionbot.patterns.curve_fit import CURVE_FIT
+from iqoptionbot.patterns.two_min_cross2 import TWO_MIN_CROSS2
+from iqoptionbot.patterns.bollinger_rsi import BOLLINGER_RSI
 
 PATTERNS = {
     "TWO_MIN_CROSS": TWO_MIN_CROSS,
