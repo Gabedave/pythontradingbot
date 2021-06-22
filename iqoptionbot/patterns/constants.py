@@ -1,6 +1,6 @@
 """Module for IQ Option API trade pattern constants."""
 
-from patterns.two_min_cross import TWO_MIN_CROSS
+from ../patterns.two_min_cross import TWO_MIN_CROSS
 from patterns.dblhc import DBLHC
 from patterns.dbhlc import DBHLC
 from patterns.tbh import TBH
