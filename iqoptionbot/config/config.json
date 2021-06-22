@@ -12,7 +12,7 @@
         "patterns": [
             "CURVE_FIT",
             "TWO_MINS_CROSS"
-        ]
+        ],
         "balance_mode": "PRACTICE"
     }
 }
