@@ -1,1 +1,1 @@
-web: gunicorn iqoptionbot.wsgi:app $PORT
+web: gunicorn wsgi:application $PORT
