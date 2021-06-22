@@ -1,6 +1,6 @@
 """Module for IQ Option API DBLHC pattern."""
 
-from patterns.base import Base
+from iqoptionbot.patterns.base import Base
 
 
 class DBLHC(Base):
