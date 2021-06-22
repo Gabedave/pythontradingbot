@@ -3,7 +3,7 @@ import json
 import logging
 import os
 
-import constants as config_constants
+import iqoptionbot.constants as config_constants
 
 
 class Settings(object):
