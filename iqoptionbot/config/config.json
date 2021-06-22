@@ -1,0 +1,18 @@
+{
+    "connection_settings": {
+        "hostname": "iqoption.com",
+        "password": "god is love",
+        "username": "gabedave01@gmail.com"
+    },
+    "trade_settings": {
+        "actives": [
+            "EURUSD-OTC",
+            "EURUSD"
+        ],
+        "patterns": [
+            "CURVE_FIT",
+            "TWO_MINS_CROSS"
+        ]
+        "balance_mode": "PRACTICE"
+    }
+}
