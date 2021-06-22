@@ -129,6 +129,8 @@ class Settings(object):
         """
         logger = logging.getLogger(__name__)
         logger.info("Create a new configuration file '%s'.", config_path)
+        
+        config_path = os.path.join(os.path.dirname(__file__), config_path)
         with open(config_path, "w") as config_file:
             json.dump(self.__config_data, config_file, indent=4, sort_keys=True)
 
