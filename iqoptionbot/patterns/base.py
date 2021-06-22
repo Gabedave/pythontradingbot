@@ -1,11 +1,9 @@
 """Module for IQ Option API base pattern."""
-from datetime import datetime
+from datetime import datetime,timedelta
 from pprint import pprint
 import time
 import math
 import copy
-from datetime import timedelta
-
 
 class Base(object):
     """Class for IQ Option API base pattern."""
@@ -61,7 +59,7 @@ class Base(object):
         print("Grabbing historical prices")
         self.two_min_servertime = None
         while not self.two_min_servertime:
-            get_time = copy.deepcopy(self.api.get_server_timestamp_datetime())
+            get_time = datetime.from_timestamp(self.api.get_server_timestamp())
             if (get_time.second == 0) and (get_time.minute) % 2 == 0:
                 self.two_min_servertime = get_time - timedelta(microseconds=get_time.microsecond)
         
@@ -103,7 +101,7 @@ class Base(object):
         
         duration_last = 0
         while duration_last == 0:
-            get_time = self.api.get_server_timestamp_datetime()
+            get_time = datetime.fromtimestamp(self.api.get_server_timestamp())
             if (get_time.second == 0) and (get_time.minute) % 2 == 0:
                 duration_last = get_time - timedelta(microseconds=get_time.microsecond)
         
