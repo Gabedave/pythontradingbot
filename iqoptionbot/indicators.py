@@ -7,7 +7,7 @@ from typing import Dict
 from typing import Union
 import copy
 
-from stock_frame import StockFrame
+from iqoptionbot.stock_frame import StockFrame
 
 class Indicators():
 
