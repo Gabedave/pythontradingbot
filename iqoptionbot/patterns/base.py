@@ -59,7 +59,7 @@ class Base(object):
         print("Grabbing historical prices")
         self.two_min_servertime = None
         while not self.two_min_servertime:
-            get_time = datetime.from_timestamp(self.api.get_server_timestamp())
+            get_time = datetime.fromtimestamp(self.api.get_server_timestamp())
             if (get_time.second == 0) and (get_time.minute) % 2 == 0:
                 self.two_min_servertime = get_time - timedelta(microseconds=get_time.microsecond)
         
