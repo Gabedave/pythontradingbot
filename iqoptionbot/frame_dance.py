@@ -1,7 +1,7 @@
 
-from stock_frame import StockFrame
-from patterns.base import Base
-from indicators import Indicators
+from iqoptionbot.stock_frame import StockFrame
+from iqoptionbot.patterns.base import Base
+from iqoptionbot.indicators import Indicators
 
 from datetime import datetime
 
