@@ -1,6 +1,7 @@
 from iqoptionbot.starter import start
 
-application = start()
+app = start()
 
 if __name__ == "__main__":
-   application
+   app
+   
