@@ -274,4 +274,5 @@ def start():
         price_df.update_frame()
 
 if __name__ == "__main__":
-    start()
+    app = start()
+    app
