@@ -37,8 +37,8 @@ def _parse_args():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-c", "--config_path", dest="config_path", type=str, default='config/config.json',
-        help="Path to new configuration file.(default='config/config.json')"
+        "-c", "--config_path", dest="config_path", type=str, default='config/appenv.py',
+        help="Path to new configuration file.(default='config/appenv.py')"
         )
     return parser.parse_args()
 
