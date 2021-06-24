@@ -1,4 +1,4 @@
-from iqoptionbot.starter import starter
+from iqoptionbot.starter import starter,start
 
 app = start()
 
