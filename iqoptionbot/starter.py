@@ -273,6 +273,7 @@ def start():
             break
         price_df.update_frame()
 
+app = start()
+
 if __name__ == "__main__":
-    app = start()
     app
