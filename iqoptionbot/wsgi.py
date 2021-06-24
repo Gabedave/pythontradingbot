@@ -1,6 +1,6 @@
-from iqoptionbot.starter import starter,start
+from iqoptionbot.starter import app,start
 
-app = start()
+application = start()
 
 if __name__ == "__main__":
    app
