@@ -1,0 +1,16 @@
+*.py[cod]
+/logs
+/build
+/dist
+/lib
+/Scripts
+*.json
+*.csv
+*.ipy
+*.ipynb
+*.txt
+*.code-workspace
+*.cfg
+*.sublime-project
+*.env
+*.bat

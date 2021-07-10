@@ -1,0 +1,8 @@
+[MASTER]
+disable=locally-disabled, duplicate-code
+
+[DESIGN]
+min-public-methods=0
+
+[FORMAT]
+max-line-length=100
