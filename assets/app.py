@@ -17,8 +17,12 @@ def home():
    if request.method == 'POST':
       name = request.form['name']
       email = request.form['email']
-      with open('logs/visitors.log','a+') as file:
-         file.write(f'\n[{name}, {email}]')
+
+      logs = '/logs'
+      if not os.path.exists(logs):
+         os.mkdir(logs)
+      with open(os.path.join(logs,'/visitors.log'),'a+') as file:
+         file.write(f'[{name}, {email}]\n')
 
       return redirect(url_for('trader', name = name))
 
