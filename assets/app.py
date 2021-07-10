@@ -5,8 +5,7 @@ import platform
 from iqoptionbot.starter import start
 from iqoptionbot.execute import execute_gen
 
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
 
@@ -18,10 +17,11 @@ def home():
       name = request.form['name']
       email = request.form['email']
 
-      logs = '/logs'
+      logs = os.path.join(BASE_DIR,'logs')
+      print(logs)
       if not os.path.exists(logs):
          os.mkdir(logs)
-      with open(os.path.join(logs,'/visitors.log'),'a+') as file:
+      with open(os.path.join(logs,'visitors.log'),'a+') as file:
          file.write(f'[{name}, {email}]\n')
 
       return redirect(url_for('trader', name = name))
