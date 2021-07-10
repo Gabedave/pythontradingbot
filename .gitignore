@@ -1,9 +1,9 @@
 *.py[cod]
-/logs
 /build
 /dist
 /lib
 /Scripts
+*.log
 *.json
 *.csv
 *.ipy
@@ -11,5 +11,6 @@
 *.code-workspace
 *.cfg
 *.sublime-project
+*.sublime-workspace
 *.env
 *.bat
