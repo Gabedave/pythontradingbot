@@ -4,6 +4,7 @@
 /lib
 /Scripts
 /logs
+*.log
 *.json
 *.csv
 *.ipy
