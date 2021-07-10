@@ -3,7 +3,7 @@
 /dist
 /lib
 /Scripts
-/log
+/logs
 *.json
 *.csv
 *.ipy
