@@ -37,16 +37,16 @@ class Starter(object):
         try:
             check, reason = self.api.connect()
         except Exception as e:
-            print('Error: ', e)
+            logger.info('Error: ', e)
             return None
 
         if check:
             logger.info("Successfully connected.")
             if self.api.check_connect == False:
-                print("Websocket did not respond")
+                logger.info("Websocket did not respond")
                 return None
         else:
-            print("No Network")
+            logger.info("No Network")
             return None
         return check, reason
 
@@ -89,14 +89,18 @@ class Starter(object):
         return balance_mode, self.balance
 
     def start_data_frame(self):
-        "Set up data frame"
+        """Set up data frame"""
+        logger = logging.getLogger(__name__)
+
         price_df = Robot(self.api, self.actives)
         price_df.initiate_frame()
         price_df.add_indicators()
-        print("Stockframe initiated and indicators added")
+        logger.info("Stockframe initiated and indicators added")
         return price_df
     
     def check_open_markets(self):
+        logger = logging.getLogger(__name__)
+
         all_markets = self.api.get_all_open_time()
         current_open_markets = []
         actives_not_open = []
@@ -113,14 +117,14 @@ class Starter(object):
         current_open_markets = list(set(self.config.get_trade_actives()) - set(actives_not_open))
 
         if actives_not_open:
-            print("{} not open right now".format(actives_not_open))
-            print("{} open".format(current_open_markets))
+            logger.info("{} not open right now".format(actives_not_open))
+            logger.info("{} open".format(current_open_markets))
         else:
-            print("All symbols open",self.actives)
+            logger.info("All symbols open",self.actives)
         
         self.actives = current_open_markets
         if current_open_markets == []:
-            print('Market closed for all actives')
+            logger.info('Market closed for all actives')
             return None
         time.sleep(2)
         return self.actives
@@ -228,6 +232,8 @@ def _create_starter(config):
 def start():
     """Main method for start."""
     # args = _parse_args()
+    logger = logging.getLogger(__name__)
+
     config = parse_config()
     starter = _create_starter(config)
     buffer = Buffer()
@@ -243,7 +249,7 @@ def start():
         return "All Markets Closed"
     price_df = starter.start_data_frame()
     #stockframe = price_df.frame
-    #print(stockframe.frame)
+    #logger.info(stockframe.frame)
 
     signalers = starter.start_signalers(price_df)
     traders = starter.start_traders()
@@ -259,14 +265,14 @@ def start():
             signal = signaler.get_signal()
             if signal and buffer.check(signal):
                 
-                print("signal received in {} direction".format(signal.direction))
+                logger.info("signal received in {} direction".format(signal.direction))
                 buffer.activate(signal)
                 
                 for trader in traders:
                     if signal.active == trader.active:
                         result, trade_id = trader.trade(signal)
                         if result: 
-                            print("Trade for {} in direction {}:{}".format(signal.direction, signal.active, trade_id))
+                            logger.info("Trade for {} in direction {}:{}".format(signal.direction, signal.active, trade_id))
                             buffer.activate(signal)
                             trade_ids.append(trade_id)
                             result_count += 1
@@ -276,7 +282,7 @@ def start():
             starter.check_open_markets()
             hr_mark = time.time() + 60*60
         if time.time() >= t_end:
-            print("Result count:",result_count)
+            logger.info("Result count:",result_count)
             break
         price_df.update_frame()
 

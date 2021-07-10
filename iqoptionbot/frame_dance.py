@@ -4,6 +4,7 @@ from iqoptionbot.patterns.base import Base
 from iqoptionbot.indicators import Indicators
 
 from datetime import datetime
+import logging
 
 class Robot():
     def __init__(self, api, actives) -> None:
@@ -25,19 +26,21 @@ class Robot():
         return self.frame
 
     def update_frame(self):
-        print("Updating stockframe")
+        logger = logging.getLogger('starter')
+
+        logger.info("Updating stockframe")
         
         #if not self.frame.frame:self.initiate_frame()
         
         last_bar_datetime = self.frame.frame.tail(
         n=1
         ).index.get_level_values(1).values
-        #pprint(self.frame)
+        #plogger.info(self.frame)
 
         latest_bars = self.data.get_latest_bar()
         self.frame.add_rows(data=latest_bars)
         self.indicator_client.refresh()
-        print('DataFrame updated',datetime.now())
+        logger.info('DataFrame updated',datetime.now())
         return self.frame
 
     def add_indicators(self):
