@@ -32,7 +32,7 @@ def home():
 def stream():
    if platform.system() == 'Windows':
       gen = execute_gen(['pythonpath.bat', '.', 'iqoptionbot/starter.py'])
-   else: gen = execute_gen(['PYTHONPATH=.', 'python', 'iqoptionbot/starter.py', 'somecommand'])
+   else: gen = execute_gen(['PYTHONPATH=$PWD', 'python', 'iqoptionbot/starter.py', 'somecommand'])
    return Response(stream_with_context(gen))
 
 @app.route('/trader/')
