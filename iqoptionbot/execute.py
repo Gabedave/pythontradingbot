@@ -5,7 +5,7 @@ from multiprocessing import Process
 from iqoptionbot.starter import start
 
 def execute_gen(your_command):
-    process = subprocess.Popen(your_command, stdout=subprocess.PIPE)
+    process = subprocess.Popen(your_command, stdout=subprocess.PIPE, shell=True)
     for line in iter(process.stdout.readline, b''):
         # f.write(line)
         yield line

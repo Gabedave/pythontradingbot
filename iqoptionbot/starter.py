@@ -200,6 +200,7 @@ def _prepare_logging():
     trader_logger.addHandler(trader_file_handler)
 
     websocket_logger = logging.getLogger("websocket")
+    websocket_logger.setLevel(logging.INFO)
 
     websocket_file_handler = logging.FileHandler(os.path.join(logs_folder, "websocket.log"))
     websocket_file_handler.setLevel(logging.DEBUG)
@@ -209,6 +210,7 @@ def _prepare_logging():
     websocket_logger.addHandler(websocket_file_handler)
 
     balance_mode_logger = logging.getLogger("balance_mode")
+    balance_mode_logger.setLevel(logging.INFO)
 
     balance_mode_file_handler = logging.FileHandler(os.path.join(logs_folder, "balance_mode.log"))
     balance_mode_file_handler.setLevel(logging.DEBUG)
