@@ -1,4 +1,4 @@
-# Python Trading Bot using the IQ Option API
+# Python Trading Bot(deployed as a Flask web app) using the IQ Option API
 
 ###Requirements installation
 
