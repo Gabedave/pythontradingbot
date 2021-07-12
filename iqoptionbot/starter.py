@@ -234,7 +234,7 @@ def _create_starter(config):
 def start():
     """Main method for start."""
     # args = _parse_args()
-    logger = logging.getLogger(__name__)
+    # logger = logging.getLogger(__name__)
 
     config = parse_config()
     starter = _create_starter(config)
@@ -267,7 +267,7 @@ def start():
             signal = signaler.get_signal()
             if signal and buffer.check(signal):
                 
-                logger.info("signal received in {} direction".format(signal.direction))
+                logger.info("Signal received in {} direction".format(signal.direction))
                 buffer.activate(signal)
                 
                 for trader in traders:

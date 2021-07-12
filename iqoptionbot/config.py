@@ -57,9 +57,9 @@ def _create_new_config(debug = None):
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(formatter)
 
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    logger.addHandler(console_handler)
+    # logger = logging.getLogger(__name__)
+    # logger.setLevel(logging.INFO)
+    # logger.addHandler(console_handler)
 
     settings_logger = logging.getLogger("settings")
     settings_logger.setLevel(logging.INFO)

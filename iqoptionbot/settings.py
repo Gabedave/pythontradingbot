@@ -128,7 +128,7 @@ class Settings(object):
 
         :param config_path: The path to config file.
         """
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger("settings")
         logger.info("Create a new configuration")
         # STILL TO BE WRITTEN
 
@@ -137,7 +137,7 @@ class Settings(object):
         """Load configuration from Environment Variables
 
         """
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger("settings")
         logger.info("Loading configuration from Environment Variables.")
 
         self.__config_data['connection_settings'] = self._connection_settings

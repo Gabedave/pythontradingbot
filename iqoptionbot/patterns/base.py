@@ -1,9 +1,11 @@
 """Module for IQ Option API base pattern."""
 from datetime import datetime,timedelta
-from pprint import pprint
 import time
 import math
 import copy
+import logging
+
+logger = logging.getLogger("websocket")
 
 class Base(object):
     """Class for IQ Option API base pattern."""
@@ -52,20 +54,25 @@ class Base(object):
         """Method to check put pattern."""
         pass
 
+    def timesync(self, from_time = None):
+        while not from_time:
+            get_time = datetime.now()
+            if (get_time.second == 0) and (get_time.minute) % 2 == 0:
+                from_time = get_time - timedelta(microseconds=get_time.microsecond)
+                # print(get_time, datetime.now())
+                return from_time
+
     def grab_prices_data(self):
         """Grabs the historical prices for all the postions in a portfolio.
 
         """
-        print("Grabbing historical prices")
-        self.two_min_servertime = None
-        while not self.two_min_servertime:
-            get_time = datetime.fromtimestamp(self.api.get_server_timestamp())
-            if (get_time.second == 0) and (get_time.minute) % 2 == 0:
-                self.two_min_servertime = get_time - timedelta(microseconds=get_time.microsecond)
-        
+        logger.info("Grabbing historical prices")
+
         candles_data = {}
         new_prices = []
 
+        self.two_min_servertime = self.timesync()
+        
         for active in self.actives:
             candles_data[active] = self.candles(active)
         
@@ -92,18 +99,14 @@ class Base(object):
         ---
         {List[dict]} -- A simplified quote list.
 
-        """        
+        """
 
-        print("Waiting for next candle... few seconds")
+        logger.info("Waiting for next candle... few seconds")
 
         candles_data = {}
         latest_prices = []
         
-        duration_last = 0
-        while duration_last == 0:
-            get_time = datetime.fromtimestamp(self.api.get_server_timestamp())
-            if (get_time.second == 0) and (get_time.minute) % 2 == 0:
-                duration_last = get_time - timedelta(microseconds=get_time.microsecond)
+        duration_last = self.timesync()
         
         time_diff = duration_last.timestamp() - self.two_min_servertime.timestamp()
         

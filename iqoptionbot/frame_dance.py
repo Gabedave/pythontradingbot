@@ -6,12 +6,13 @@ from iqoptionbot.indicators import Indicators
 from datetime import datetime
 import logging
 
+logger = logging.getLogger("websocket")
+
 class Robot():
     def __init__(self, api, actives) -> None:
         self.api = api
         self.actives = actives
         self.data = Base(self.api, self.actives, candle_length=120)
-        
     
     def initiate_frame(self):
         
@@ -26,21 +27,18 @@ class Robot():
         return self.frame
 
     def update_frame(self):
-        logger = logging.getLogger('starter')
 
         logger.info("Updating stockframe")
-        
-        #if not self.frame.frame:self.initiate_frame()
         
         last_bar_datetime = self.frame.frame.tail(
         n=1
         ).index.get_level_values(1).values
-        #plogger.info(self.frame)
+        # logger.info(self.frame)
 
         latest_bars = self.data.get_latest_bar()
         self.frame.add_rows(data=latest_bars)
         self.indicator_client.refresh()
-        logger.info('DataFrame updated',datetime.now())
+        logger.info("DataFrame updated")
         return self.frame
 
     def add_indicators(self):
