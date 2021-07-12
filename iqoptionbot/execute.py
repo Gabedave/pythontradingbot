@@ -9,7 +9,7 @@ def execute_gen(your_command):
     process = subprocess.Popen(your_command, stdout=subprocess.PIPE, shell=True)
     for line in iter(process.stdout.readline, b''):
         # f.write(line)
-        yield line
+        yield line.decode("utf-8")
 
 # from contextlib import redirect_stdout
 # import io
@@ -45,12 +45,3 @@ def execute_gen(your_command):
 #     async_gen = execute_gen(command)
 #     sync_gen = iter_over_async(async_gen, loop)
 #     return sync_gen
-
-def run():
-    gen = execute_gen(['PYTHONPATH=.','iqoptionbot/starter.py'])
-    
-    for i in range(5):
-        print(next(gen))
-
-if __name__=='__main__':
-    run()

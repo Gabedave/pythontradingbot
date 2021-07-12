@@ -1,2 +1,2 @@
-web: gunicorn iqoptionbot.execute:run $PORT
+web: gunicorn assets.app:app $PORT
 
