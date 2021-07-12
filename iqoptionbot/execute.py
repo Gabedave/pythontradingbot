@@ -45,6 +45,8 @@ def execute_gen(your_command):
 #     sync_gen = iter_over_async(async_gen, loop)
 #     return sync_gen
 
-# if __name__=='__main__':
-#     execute_multi(start)
+if __name__=='__main__':
+    gen = execute_gen(['PYTHONPATH=.','python','iqoptionbot/starter.py'])
+    while True:
+        print(next(gen))
 
